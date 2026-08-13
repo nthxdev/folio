@@ -6,7 +6,7 @@
     + React3Fibre
     + React3Fibre/Drei
     + GSAP
-    + Tailwind
+    + TailwindCSS
 
 
 # Setup
@@ -17,3 +17,4 @@ npm install
 ```bash
 npm run dev
 ```
+
