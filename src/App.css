@@ -1,18 +1,222 @@
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-html,body,#root{
+
+html,
+body,
+#root {
   width: 100%;
   background-color: black;
+  color: whitesmoke;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-main{
+
+main {
   position: relative;
 }
-section{
-  border: 2px solid #fff;
-  height: 100vh;
+
+section {
+  min-height: 100vh;
   position: relative;
   z-index: 2;
+}
+
+#canvas-elem::after {
+  content: "";
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  background-image: url(/background-l.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: all 0.3s linear;
+}
+
+#section-1 {
+
+  --gap: 5rem;
+
+  position: relative;
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2.5rem;
+    padding-top: 3.5rem;
+
+    .nav-elem:nth-child(2) {
+      i {
+        color: red;
+      }
+    }
+
+    svg {
+      max-width: 5rem;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .middle {
+    display: flex;
+    gap: var(--gap);
+
+    .left,
+    .right {
+      width: 50%;
+    }
+
+    .left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-block: 7rem;
+    }
+
+    h1 {
+      font-size: 5rem;
+      line-height: 0.8;
+      text-align: right;
+    }
+
+  }
+
+  .bottom {
+
+    display: flex;
+    gap: var(--gap);
+
+    .left,
+    .right {
+      width: 50%;
+    }
+
+    .right {
+      p {
+        font-weight: 200;
+        line-height: 1.5;
+      }
+    }
+
+  }
+
+  .first-line {
+    width: 35rem;
+    background-color: rgba(255, 0, 0, 0.396);
+    height: 1px;
+    position: absolute;
+    transform: rotate(45deg) translate(0, -17rem);
+  }
+
+  .second-line {
+    width: 10rem;
+    background-color: rgba(255, 0, 0, 0.396);
+    height: 1px;
+    position: absolute;
+    transform: rotate(135deg);
+    top: 28%;
+    right: 12%;
+  }
+
+
+}
+
+#section-2 {
+  .titles {
+    display: flex;
+    flex-direction: column;
+    padding-left: 17rem;
+    margin-block: 10rem;
+
+    .title {
+      display: flex;
+      gap: 4rem;
+      opacity: 0.3;
+      padding-block: 2rem;
+      transition: all 0.3s linear;
+      cursor: pointer;
+
+      h1 {
+        font-size: 4.5rem;
+        font-weight: 100;
+        line-height: 1;
+      }
+
+      small {
+        margin-top: 0.6rem;
+        font-size: 0.5rem;
+      }
+
+    }
+
+    .title:hover {
+      opacity: 1;
+    }
+
+
+
+  }
+}
+
+main:has(#section-2 .title:hover) #canvas-elem::after {
+  opacity: 0;
+}
+
+.images {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: all 0.3s linear;
+  }
+
+}
+
+main:has(#section-2 .title[img-title="tomorrowland"]:hover) .images #tomorrowland {
+  opacity: 1;
+  background-color: rgb(4, 7, 24);
+}
+
+main:has(#section-2 .title[img-title="navy-pier"]:hover) .images #navy-pier {
+  opacity: 1;
+  background-color: rgb(4, 7, 24);
+}
+
+main:has(#section-2 .title[img-title="msi-chicago"]:hover) .images #msi-chicago {
+  opacity: 1;
+  background-color: rgb(4, 7, 24);
+}
+
+main:has(#section-2 .title[img-title="phone"]:hover) .images #phone {
+  opacity: 1;
+  background-color: rgb(4, 7, 24);
+}
+
+main:has(#section-2 .title[img-title="kikk"]:hover) .images #kikk {
+  opacity: 1;
+  background-color: rgba(1, 15, 92, 0.679);
+}
+main:has(#section-2 .title[img-title="kennedy"]:hover) .images #kennedy {
+  opacity: 1;
+  background-color: rgb(4, 7, 24);
+}
+main:has(#section-2 .title[img-title="opera"]:hover) .images #opera {
+  opacity: 1;
+  background-color: rgb(176, 4, 4);
 }
