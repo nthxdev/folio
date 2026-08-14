@@ -5,19 +5,53 @@ import { Canvas } from "@react-three/fiber";
 function App() {
   return (
     <>
-      <main className="relative h-screen">
-        <div className="images">
-          <img id="tomorrowland" src="/tommorowland.png" alt="" />
-          <img id="navy-pier" src="/navy-pier.png" alt="" />
-          <img id="msi-chicago" src="/msi-chicago.png" alt="" />
-          <img id="phone" src="/phone.png" alt="" />
-          <img id="kikk" src="/kikk.png" alt="" />
-          <img id="kennedy" src="/kennedy.png" alt="" />
-          <img id="opera" src="/opera.png" alt="" />
+      <main className="group relative h-screen">
+        <div className="fixed inset-0 z-[1] h-full w-full">
+          <img
+            id="tomorrowland"
+            src="/tommorowland.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-300 ease-linear group-has-[[img-title=tomorrowland]:hover]:bg-[rgb(4,7,24)] group-has-[[img-title=tomorrowland]:hover]:opacity-100"
+          />
+          <img
+            id="navy-pier"
+            src="/navy-pier.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-300 ease-linear group-has-[[img-title=navy-pier]:hover]:bg-[rgb(4,7,24)] group-has-[[img-title=navy-pier]:hover]:opacity-100"
+          />
+          <img
+            id="msi-chicago"
+            src="/msi-chicago.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-300 ease-linear group-has-[[img-title=msi-chicago]:hover]:bg-[rgb(4,7,24)] group-has-[[img-title=msi-chicago]:hover]:opacity-100"
+          />
+          <img
+            id="phone"
+            src="/phone.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-300 ease-linear group-has-[[img-title=phone]:hover]:bg-[rgb(4,7,24)] group-has-[[img-title=phone]:hover]:opacity-100"
+          />
+          <img
+            id="kikk"
+            src="/kikk.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-300 ease-linear group-has-[[img-title=kikk]:hover]:bg-[rgba(1,15,92,0.679)] group-has-[[img-title=kikk]:hover]:opacity-100"
+          />
+          <img
+            id="kennedy"
+            src="/kennedy.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-300 ease-linear group-has-[[img-title=kennedy]:hover]:bg-[rgb(4,7,24)] group-has-[[img-title=kennedy]:hover]:opacity-100"
+          />
+          <img
+            id="opera"
+            src="/opera.png"
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-300 ease-linear group-has-[[img-title=opera]:hover]:bg-[rgb(176,4,4)] group-has-[[img-title=opera]:hover]:opacity-100"
+          />
         </div>
         <Canvas
-          id="canvas-elem"
-          className="fixed inset-0 z-[1] h-screen w-screen"
+          className="fixed inset-0 z-[1] h-screen w-screen after:content-[''] after:absolute after:inset-0 after:-z-[1] after:w-full after:h-full after:bg-[url('/background-l.png')] after:bg-cover after:bg-no-repeat after:opacity-100 after:transition-all after:duration-300 after:ease-linear group-has-[.title:hover]:after:opacity-0"
           style={{ position: "fixed" }}
         >
           <Fox />
@@ -63,7 +97,7 @@ function App() {
               >
                 <path d="M2 1L8 7L2 13" stroke="#FF3B30" strokeWidth="2" />
               </svg>
-              <span className="tracking-[-0.015rem]">Our Showreel</span>
+              <span className="tracking-[-0.015rem]">Intro Showreel</span>
             </button>
             <button
               type="button"
@@ -94,27 +128,35 @@ function App() {
               <h1 className="hero-serif text-[9rem] font-bold leading-[0.84] tracking-[-0.22rem]">
                 <span className="block">We</span>
                 <span className="block">Make</span>
-                <span className="block">Good</span>
+                <span className="block">Cool</span>
                 <span className="block">Shit</span>
               </h1>
             </div>
-            <div className="absolute left-[61%] top-[460%] leading-[1.48] tracking-[0.01em]">
-              <p className="font-sans text-[30px] font-light text-white">
-                Dogstudio is a multidisciplinary
-                <br />
-                creative studio at the intersection
-                <br />
-                of art, design and technology.
+            <div className="absolute left-[55%] top-[430%] leading-[1.48] tracking-[0.01em]">
+              <p className="font-sans text-[24px] font-light text-white">
+                  Dogstudio is a multidisciplinary
+                  <br />
+                  creative agency at the intersection
+                  <br />
+                  of art, design and technology.
               </p>
-              <p className="mt-[20px] font-sans text-[18px] font-light leading-[1.55] text-white/45">
+              <p className="mt-[20px] font-sans text-[13px] font-light leading-[1.55] text-white/45">
                 {" "}
                 Our goal is to deliver amazing experiences that make <br />{" "}
                 people talk, and build strategic value for brands, tech, <br />{" "}
                 entertainment, arts & culture.
               </p>
-              <div className="mt-[60px] flex items-center gap-[11px] font-sans text-[12px] font-semibold text-white">
+              <div className="mt-[60px] flex items-center gap-[11px] font-sans text-[9px] font-semibold text-white">
                 <a href="#" className="transition-opacity hover:opacity-60">
-                  Facebook
+                  Github
+                </a>
+                <span>/</span>
+                <a href="#" className="transition-opacity hover:opacity-60">
+                  Linkedin
+                </a>
+                <span>/</span>
+                <a href="#" className="transition-opacity hover:opacity-60">
+                  X
                 </a>
                 <span>/</span>
                 <a href="#" className="transition-opacity hover:opacity-60">
@@ -122,15 +164,7 @@ function App() {
                 </a>
                 <span>/</span>
                 <a href="#" className="transition-opacity hover:opacity-60">
-                  Dribbble
-                </a>
-                <span>/</span>
-                <a href="#" className="transition-opacity hover:opacity-60">
-                  Twitter
-                </a>
-                <span>/</span>
-                <a href="#" className="transition-opacity hover:opacity-60">
-                  Newsletter
+                  Blog
                 </a>
               </div>
             </div>
@@ -141,34 +175,55 @@ function App() {
         </section>
 
         <section id="section-2" className="relative z-[2] min-h-screen">
-          <div className="titles">
-            <div img-title="tomorrowland" className="title">
-              <small>2020 - ONGOING</small>
-              <h1>Tomorrowland</h1>
+          <div className="titles flex flex-col pl-[17rem] my-40">
+            <div
+              img-title="tomorrowland"
+              className="title flex cursor-pointer gap-16 py-8 opacity-30 transition-all duration-300 ease-linear hover:opacity-100"
+            >
+              <small className="mt-[0.6rem] text-[0.5rem]">2020 - ONGOING</small>
+              <h1 className="text-[4.5rem] font-thin leading-none">Tomorrowland</h1>
             </div>
-            <div img-title="navy-pier" className="title">
-              <small>2020 - ONGOING</small>
-              <h1> Navy Pier</h1>
+            <div
+              img-title="navy-pier"
+              className="title flex cursor-pointer gap-16 py-8 opacity-30 transition-all duration-300 ease-linear hover:opacity-100"
+            >
+              <small className="mt-[0.6rem] text-[0.5rem]">2020 - ONGOING</small>
+              <h1 className="text-[4.5rem] font-thin leading-none"> Navy Pier</h1>
             </div>
-            <div img-title="msi-chicago" className="title">
-              <small>2020 - ONGOING</small>
-              <h1> MSI Chicago</h1>
+            <div
+              img-title="msi-chicago"
+              className="title flex cursor-pointer gap-16 py-8 opacity-30 transition-all duration-300 ease-linear hover:opacity-100"
+            >
+              <small className="mt-[0.6rem] text-[0.5rem]">2020 - ONGOING</small>
+              <h1 className="text-[4.5rem] font-thin leading-none"> MSI Chicago</h1>
             </div>
-            <div img-title="phone" className="title">
-              <small>2020 - ONGOING</small>
-              <h1>This Was Louise’s Phone</h1>
+            <div
+              img-title="phone"
+              className="title flex cursor-pointer gap-16 py-8 opacity-30 transition-all duration-300 ease-linear hover:opacity-100"
+            >
+              <small className="mt-[0.6rem] text-[0.5rem]">2020 - ONGOING</small>
+              <h1 className="text-[4.5rem] font-thin leading-none">This Was Louise’s Phone</h1>
             </div>
-            <div img-title="kikk" className="title">
-              <small>2020 - ONGOING</small>
-              <h1>KIKK Festival 2018</h1>
+            <div
+              img-title="kikk"
+              className="title flex cursor-pointer gap-16 py-8 opacity-30 transition-all duration-300 ease-linear hover:opacity-100"
+            >
+              <small className="mt-[0.6rem] text-[0.5rem]">2020 - ONGOING</small>
+              <h1 className="text-[4.5rem] font-thin leading-none">KIKK Festival 2018</h1>
             </div>
-            <div img-title="kennedy" className="title">
-              <small>2020 - ONGOING</small>
-              <h1>The Kennedy Center</h1>
+            <div
+              img-title="kennedy"
+              className="title flex cursor-pointer gap-16 py-8 opacity-30 transition-all duration-300 ease-linear hover:opacity-100"
+            >
+              <small className="mt-[0.6rem] text-[0.5rem]">2020 - ONGOING</small>
+              <h1 className="text-[4.5rem] font-thin leading-none">The Kennedy Center</h1>
             </div>
-            <div img-title="opera" className="title">
-              <small>2020 - ONGOING</small>
-              <h1>Royal Opera Of Wallonia</h1>
+            <div
+              img-title="opera"
+              className="title flex cursor-pointer gap-16 py-8 opacity-30 transition-all duration-300 ease-linear hover:opacity-100"
+            >
+              <small className="mt-[0.6rem] text-[0.5rem]">2020 - ONGOING</small>
+              <h1 className="text-[4.5rem] font-thin leading-none">Royal Opera Of Wallonia</h1>
             </div>
           </div>
         </section>
