@@ -21,7 +21,7 @@ const Fox = () => {
   // Vite exposes public folder contents at the website's root URL.
 
   // load Fox model
-  const Fox = useGLTF("/models/dog.drc.glb");
+  const Fox = useGLTF("/fox/models/fox.drc.glb");
   // reference fox model
 
   // useEffect in place of useThree
@@ -57,10 +57,8 @@ const Fox = () => {
 
   // texture for fox
   const [normalMap, sampleMatCap] = useTexture([
-    "/dog_normals.jpg",
-    "/matcap/mat-2.png",
-    "/branches_diffuse.jpeg",
-    "/branches_normals.jpeg",
+  "/fox/images/fox_normals.jpg",
+  "/matcap/mat-2.png",
   ]).map((texture) => {
     texture.flipY = false;
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -69,8 +67,8 @@ const Fox = () => {
 
   // texture for branches
   const [branchMatMap, brancheNormalMap] = useTexture([
-    "/branches_diffuse.jpeg",
-    "/branches_normals.jpeg",
+  "/fox/images/branches_diffuse.jpeg",
+  "/fox/images/branches_normals.jpeg",
   ]).map((texture) => {
     texture.flipY = true;
     texture.colorSpace = THREE.SRGBColorSpace;
@@ -253,115 +251,90 @@ const Fox = () => {
   }, []);
 
   useEffect(() => {
-    document
-      .querySelector(`.title[img-title="tomorrowland"]`)
-      .addEventListener("mouseenter", () => {
-        material.current.uMatcap1.value = mat19;
-        gsap.to(material.current.uProgress, {
-          value: 0.0,
-          duration: 0.3,
-          onComplete: () => {
-            material.current.uMatcap2.value = material.current.uMatcap1.value;
-            material.current.uProgress.value = 1.0;
-          },
-        });
-      });
-    document
-      .querySelector(`.title[img-title="navy-pier"]`)
-      .addEventListener("mouseenter", () => {
-        material.current.uMatcap1.value = mat8;
-
-        gsap.to(material.current.uProgress, {
-          value: 0.0,
-          duration: 0.3,
-          onComplete: () => {
-            material.current.uMatcap2.value = material.current.uMatcap1.value;
-            material.current.uProgress.value = 1.0;
-          },
-        });
-      });
-    document
-      .querySelector(`.title[img-title="msi-chicago"]`)
-      .addEventListener("mouseenter", () => {
-        material.current.uMatcap1.value = mat9;
-
-        gsap.to(material.current.uProgress, {
-          value: 0.0,
-          duration: 0.3,
-          onComplete: () => {
-            material.current.uMatcap2.value = material.current.uMatcap1.value;
-            material.current.uProgress.value = 1.0;
-          },
-        });
-      });
-    document
-      .querySelector(`.title[img-title="phone"]`)
-      .addEventListener("mouseenter", () => {
-        material.current.uMatcap1.value = mat12;
-
-        gsap.to(material.current.uProgress, {
-          value: 0.0,
-          duration: 0.3,
-          onComplete: () => {
-            material.current.uMatcap2.value = material.current.uMatcap1.value;
-            material.current.uProgress.value = 1.0;
-          },
-        });
-      });
-    document
-      .querySelector(`.title[img-title="kikk"]`)
-      .addEventListener("mouseenter", () => {
-        material.current.uMatcap1.value = mat10;
-
-        gsap.to(material.current.uProgress, {
-          value: 0.0,
-          duration: 0.3,
-          onComplete: () => {
-            material.current.uMatcap2.value = material.current.uMatcap1.value;
-            material.current.uProgress.value = 1.0;
-          },
-        });
-      });
-    document
-      .querySelector(`.title[img-title="kennedy"]`)
-      .addEventListener("mouseenter", () => {
-        material.current.uMatcap1.value = mat8;
-
-        gsap.to(material.current.uProgress, {
-          value: 0.0,
-          duration: 0.3,
-          onComplete: () => {
-            material.current.uMatcap2.value = material.current.uMatcap1.value;
-            material.current.uProgress.value = 1.0;
-          },
-        });
-      });
-    document
-      .querySelector(`.title[img-title="opera"]`)
-      .addEventListener("mouseenter", () => {
-        material.current.uMatcap1.value = mat13;
-
-        gsap.to(material.current.uProgress, {
-          value: 0.0,
-          duration: 0.3,
-          onComplete: () => {
-            material.current.uMatcap2.value = material.current.uMatcap1.value;
-            material.current.uProgress.value = 1.0;
-          },
-        });
-      });
-    document.querySelector(`.titles`).addEventListener("mouseleave", () => {
-      material.current.uMatcap1.value = mat2;
-
+    const crossfadeTo = (newTex) => {
+      gsap.killTweensOf(material.current.uProgress);
+      material.current.uMatcap2.value = material.current.uMatcap1.value;
+      material.current.uMatcap1.value = newTex;
+      material.current.uProgress.value = 1.0;
       gsap.to(material.current.uProgress, {
         value: 0.0,
         duration: 0.3,
-        onComplete: () => {
-          material.current.uMatcap2.value = material.current.uMatcap1.value;
-          material.current.uProgress.value = 1.0;
-        },
+        overwrite: "auto",
       });
+    };
+
+    const hoverMap = {
+      tomorrowland: mat19,
+      "navy-pier": mat8,
+      "msi-chicago": mat9,
+      phone: mat12,
+      kikk: mat10,
+      kennedy: mat8,
+      opera: mat13,
+    };
+
+    const mainEl = document.querySelector("main");
+    const imageEls = Object.keys(hoverMap).reduce((acc, key) => {
+      acc[key] = document.getElementById(key);
+      return acc;
+    }, {});
+
+    const activeKey = { current: null };
+    const setActive = (key) => {
+      if (key === activeKey.current) return; // no-op if nothing changed
+      activeKey.current = key;
+      crossfadeTo(key ? hoverMap[key] : mat2);
+      if (mainEl) mainEl.dataset.hovering = key ? "true" : "false";
+      Object.entries(imageEls).forEach(([k, el]) => {
+        if (el) el.style.opacity = k === key ? "1" : "0";
+      });
+    };
+
+    // --- normal hover path (mouse actually moving) ---
+    const titlesEl = document.querySelector(`.titles`);
+    const enterHandlers = [];
+    Object.keys(hoverMap).forEach((key) => {
+      const el = document.querySelector(`.title[img-title="${key}"]`);
+      if (!el) return;
+      const handler = () => setActive(key);
+      el.addEventListener("mouseenter", handler);
+      enterHandlers.push([el, handler]);
     });
+    const leaveHandler = () => setActive(null);
+    titlesEl?.addEventListener("mouseleave", leaveHandler);
+
+    // --- fast-scroll fallback ---
+    // mouseenter/mouseleave don't reliably fire when content moves under a
+    // stationary cursor, so re-check what's under the pointer on scroll too
+    const mousePos = { x: -1, y: -1 };
+    const trackMouse = (e) => {
+      mousePos.x = e.clientX;
+      mousePos.y = e.clientY;
+    };
+    window.addEventListener("mousemove", trackMouse);
+
+    let rafId = null;
+    const revalidateOnScroll = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        if (mousePos.x < 0) return;
+        const el = document.elementFromPoint(mousePos.x, mousePos.y);
+        const titleEl = el?.closest(".title[img-title]");
+        setActive(titleEl?.getAttribute("img-title") ?? null);
+      });
+    };
+    window.addEventListener("scroll", revalidateOnScroll, { passive: true });
+
+    return () => {
+      enterHandlers.forEach(([el, handler]) =>
+        el.removeEventListener("mouseenter", handler),
+      );
+      titlesEl?.removeEventListener("mouseleave", leaveHandler);
+      window.removeEventListener("mousemove", trackMouse);
+      window.removeEventListener("scroll", revalidateOnScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
