@@ -25,12 +25,12 @@ const Fox = () => {
   const Fox = useGLTF("/fox/models/fox.drc.glb");
   // reference fox model
 
-  // useEffect in place of useThree
   useThree(({ camera, scene, gl }) => {
     camera.position.set(0, 0, 0.28);
     gl.toneMapping = THREE.ReinhardToneMapping;
     gl.outputColorSpace = THREE.SRGBColorSpace;
   });
+
   const parentNeck = useRef(null);
   const childNeck = useRef(null);
   const childHead = useRef(null);
@@ -56,19 +56,6 @@ const Fox = () => {
       else if (child.name === "camera1_group") camGroup.current = child;
       else if (child.name === "camera1_aim") camAim.current = child;
     });
-
-    // STEP 1 — run once, check console, then delete this block.
-    // We need the real authored values before wiring the camera up properly.
-    if (camGroup.current && camAim.current) {
-      console.log(
-        "camera1_group world pos:",
-        camGroup.current.getWorldPosition(new THREE.Vector3()),
-      );
-      console.log(
-        "camera1_aim world pos:",
-        camAim.current.getWorldPosition(new THREE.Vector3()),
-      );
-    }
   });
 
   // play all the animation of foxmode(inlcudes fox and branches)
@@ -77,33 +64,56 @@ const Fox = () => {
     actions["Take 001"].play();
   }, [actions]);
 
-  // texture for fox
+    // texture for fox
   const [normalMap, diffuseMap, specularMap, sampleMatCap] = useTexture([
-    "/fox/images/fox_normals.jpg",
-    "/fox/images/fox_diffuse.jpg",
-    "/fox/images/fox_specular.jpg",
-    "/matcap/mat-2.png",
-  ]);
+  "/fox/images/fox_normals.jpg",
+  "/fox/images/fox_diffuse.jpg",
+  "/fox/images/fox_specular.jpg",
+  "/matcap/mat-2.png",
+]).map((texture, i) => {
+  // matcap (index 3) keeps default flipY, everything else needs flipY = false
+  if (i !== 3) texture.flipY = false;
 
-  normalMap.flipY = false;
-  normalMap.colorSpace = THREE.NoColorSpace; // direction data, keep linear
+  // normal (0) and specular (2) are non-color data -> linear/NoColorSpace
+  // diffuse (1) and matcap (3) are color data -> sRGB
+  texture.colorSpace = i === 0 || i === 2 ? THREE.NoColorSpace : THREE.SRGBColorSpace;
 
-  diffuseMap.flipY = false;
-  diffuseMap.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+});
 
-  specularMap.flipY = false;
-  specularMap.colorSpace = THREE.NoColorSpace;
+const FoxMaterial = new THREE.MeshStandardMaterial({
+  map: diffuseMap,                                    // color/pattern
+  normalMap: normalMap,                               // surface detail
+  normalScale: new THREE.Vector2(1.6, 1.6),          // bump strength
+  roughnessMap: specularMap,                          // controls matte/shiny (inverted spec)
 
-  sampleMatCap.colorSpace = THREE.SRGBColorSpace;
+  roughness: 0.8,                                     // fallback if no map
+  metalness: 0.0,                                     // keep at 0 for fur (not metal)
+});
 
-  // FoxMaterial — no `map` prop, avoids the multiply-to-black problem
-  const FoxMaterial = new THREE.MeshMatcapMaterial({
-    // map: diffuseMap, // NEW — brings back real fur color/pattern instead of flat matcap tint
-    normalMap: normalMap,
-    normalScale: new THREE.Vector2(1.6, 1.6), // default is (1,1) — push this up
-    matcap: sampleMatCap,
-  });
+FoxMaterial.onBeforeCompile = (shader) => {
+  shader.uniforms.uMatcap = { value: sampleMatCap };
+  
+  shader.fragmentShader = shader.fragmentShader.replace(
+    "void main() {",
+    `
+      uniform sampler2D uMatcap;
+      void main() {
+    `
+  );
 
+shader.fragmentShader = shader.fragmentShader.replace(
+  "gl_FragColor = vec4( outgoingLight, diffuseColor.a );",
+  `
+    vec3 viewDir = normalize(vViewPosition);
+    vec3 x = normalize(vec3(viewDir.z, 0.0, -viewDir.x));
+    vec3 y = cross(viewDir, x);
+    vec2 matcapUV = vec2(dot(x, normal), dot(y, normal)) * 0.495 + 0.5;
+    vec3 matcapColor = texture2D(uMatcap, matcapUV).rgb;
+    gl_FragColor = vec4(mix(outgoingLight, matcapColor, 0.7), diffuseColor.a);
+  `
+);
+};
   // texture for branches
   const [branchMatMap, brancheNormalMap] = useTexture([
     "/fox/images/branches_diffuse.jpeg",

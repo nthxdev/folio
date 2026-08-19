@@ -34,8 +34,7 @@ const Fox = () => {
   const parentNeck = useRef(null);
   const childNeck = useRef(null);
   const childHead = useRef(null);
-  // get fox rig head and neck
-  // pass camera as we gonna use it & head , neck variable will be created
+
   useThree(({ camera }) => {
     Fox.scene.traverse((child) => {
       if (child.name === "DOGSTUDIO_RIGJNT_neck01") {
