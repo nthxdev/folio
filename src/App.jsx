@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Fox from "./components/Fox";
 import { Canvas } from "@react-three/fiber";
+import { Environment } from "@react-three/drei";
 
 function App() {
   return (
@@ -57,6 +58,22 @@ function App() {
           className="fixed inset-0 z-[1] h-screen w-screen after:content-[''] after:absolute after:inset-0 after:-z-[1] after:w-full after:h-full after:bg-[url('/background-l.png')] after:bg-cover after:bg-no-repeat after:opacity-100 after:transition-all after:duration-300 after:ease-linear group-data-[hovering=true]/hero-hover:after:opacity-0"
           style={{ position: "fixed" }}
         >
+          <Environment preset="night" />
+          <hemisphereLight
+            skyColor={0x8fa8ff}
+            groundColor={0x120a2a}
+            intensity={0.55}
+          />
+          <directionalLight
+            position={[2, 4, 3]}
+            color={0xffe9d1}
+            intensity={1.4}
+          />
+          <directionalLight
+            position={[-3, 1, -2]}
+            color={0x5a7bff}
+            intensity={0.7}
+          />
           <Fox />
         </Canvas>
         <section
